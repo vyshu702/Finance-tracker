@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Personal Finance Tracker</h1>
+
+    <section id="add-expense">
+        <h2>Add Expense</h2>
+        <form action="/add_expense" method="post">
+            <label for="category">Category:</label>
+            <select name="category" id="category">
+                <option value="Food">Food</option>
+                <option value="Transport">Transport</option>
+                <option value="Entertainment">Entertainment</option>
+            </select>
+            <label for="amount">Amount:</label>
+            <input type="number" name="amount" required>
+            <label for="currency">Currency:</label>
+            <select name="currency">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="INR">INR</option>
+            </select>
+            <button type="submit">Add Expense</button>
+        </form>
+    </section>
+
+    <section id="summary">
+        <h2>Expense Summary</h2>
+        <button id="load-summary">Load Summary</button>
+        <div id="summary-result"></div>
+    </section>
+
+    <section id="goals">
+        <h2>Set Financial Goal</h2>
+        <form action="/set_goal" method="post">
+            <input type="text" name="goal" placeholder="Your financial goal" required>
+            <button type="submit">Set Goal</button>
+        </form>
+    </section>
+
+    <section id="subscriptions">
+        <h2>Manage Subscriptions</h2>
+        <form action="/add_subscription" method="post">
+            <input type="text" name="subscription" placeholder="Subscription name" required>
+            <button type="submit">Add Subscription</button>
+        </form>
+    </section>
+
+    <script>
+        document.getElementById('load-summary').addEventListener('click', function() {
+            fetch('/summary')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('summary-result').innerHTML = `
+                        <p>Total Expenses: $${data.total_expenses}</p>
+                        <p>AI Insights: ${data.insights}</p>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>
